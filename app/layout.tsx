@@ -42,20 +42,20 @@ export default async function RootLayout({
                 <div className="flex gap-4 items-center pt-2">
                   <ThemeToggle />
                   <Link
-                    href="https://bitgpt.xyz/discord"
-                    className="text-black dark:text-white px-4 py-2 rounded-full font-medium border border-gray-300 dark:border-gray-600 dark:hover:border-gray-500"
+                    href="/"
+className="bg-[#2E74FF] hover:bg-[#2361DB] dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded-full font-medium"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Join Community
+                    Home
                   </Link>
                   <Link
-                    href="https://github.com/bit-gpt/h402"
+                    href="/marketplace"
                     className="bg-[#2E74FF] hover:bg-[#2361DB] dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded-full font-medium"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    View on GitHub
+                    Marketplace
                   </Link>
                 </div>
               </header>
