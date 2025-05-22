@@ -35,7 +35,7 @@ export const solanaPaymentDetails = {
   description: "Generate AI image with Solana",
   mimeType: "application/json",
   outputSchema: null,
-  payToAddress: "C99yNbpT3quWREbbxDaJcJBLrPyzAyFTg6rbCRZfTjku",
+  payToAddress: "HZsKA5oQCtnXXUCCc4bXmFuyijJC5eydCoFQGSz9XgaV",
   estimatedProcessingTime: 5,
   extra: null,
 };
