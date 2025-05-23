@@ -2,6 +2,8 @@
 import { useEffect, useState,useContext } from "react";
 import { useParams } from "next/navigation";
 import { SelectedWalletAccountContext } from "@/solana/context/SelectedWalletAccountContext";
+import SolConnect from "@/solana/components/fileshareConnecteWallet";
+import SolanaMiddlewarePayment from '../../../solana/components/solanaMiddlewarePayment';
 type FileShare = {
   id: string;
   title: string;
@@ -11,28 +13,13 @@ type FileShare = {
   cid: string;
 };
 
-export const solanaPaymentDetails = {
-  scheme: "exact",
-  namespace: "solana",
-  networkId: "mainnet",
-  amountRequired: 0.001,
-  amountRequiredFormat: "formatted" as const,
-  tokenAddress: "11111111111111111111111111111111", // System Program ID for native SOL
-  resource: "solana-image-generation",
-  description: "Generate AI image with Solana",
-  mimeType: "application/json",
-  outputSchema: null,
-  payToAddress: "HZsKA5oQCtnXXUCCc4bXmFuyijJC5eydCoFQGSz9XgaV",
-  estimatedProcessingTime: 5,
-  extra: null,
-};
 
 
 export default function FileDetailPage() {
   const { id } = useParams();
   const [file, setFile] = useState<FileShare | null>(null);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(true);
   const [selectedAccount] = useContext(SelectedWalletAccountContext); 
 
   useEffect(() => {
@@ -57,6 +44,22 @@ export default function FileDetailPage() {
   if (!file)
     return <div className="flex justify-center items-center h-screen text-red-500">File not found ⚠️</div>;
 
+   const solanaPaymentDetails = {
+    scheme: "exact",
+    namespace: "solana",
+    networkId: "mainnet",
+    amountRequired: file.price,
+    amountRequiredFormat: "formatted" as const,
+    tokenAddress: "11111111111111111111111111111111", // System Program ID for native SOL
+    resource: "Pay for Content",
+    description: file.metadata,
+    mimeType: "application/json",
+    outputSchema: null,
+    payToAddress: "HZsKA5oQCtnXXUCCc4bXmFuyijJC5eydCoFQGSz9XgaV",
+    estimatedProcessingTime: 5,
+    extra: null,
+  };
+  
   return (
     <div className="min-h-screen flex justify-center items-center bg-white dark:bg-black px-4">
       <div className="bg-white dark:bg-zinc-900 shadow-xl rounded-2xl p-8 max-w-lg w-full border border-gray-200 dark:border-zinc-800">
@@ -84,25 +87,17 @@ export default function FileDetailPage() {
             </a>
           )}
           {selectedAccount ? (
-            <>
-              hello its connected
-            </>
+            <SolanaMiddlewarePayment
+              isProcessing={isProcessing}
+              setIsProcessing={setIsProcessing}
+              id={id as string}
+              PurchaseMetadata={solanaPaymentDetails}
+            />
           ) : (
-            <button
-              onClick={() => alert("handleBuy() logic goes here 🤑")}
-              className="w-full bg-[#2E74FF] hover:bg-[#2361DB] dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
-            >
-              Connect Wallet
-            </button>
+            <SolConnect />
           )}
         </div>
 
-        <button
-          onClick={() => alert("handleBuy() logic goes here 🤑")}
-          className="w-full bg-[#2E74FF] hover:bg-[#2361DB] dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
-        >
-          Buy this File
-        </button>
       </div>
     </div>
   );
