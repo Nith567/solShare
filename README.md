@@ -1,30 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SolShare – A Solana-Powered 402 Paywall File Marketplace 🚀🔐
 
-## Getting Started
+SolShare is a modern decentralized file marketplace built with **Solana**, **Next.js 15+**, and **Pinata** IPFS storage.  
+This dApp allows users to upload, pay, and access token-gated content using the **HTTP 402 Payment Required protocol**.
 
-First, run the development server:
+---
 
-```bash
-pnpm run dev
-```
+## 🔥 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🪙 **Solana Wallet Auth** – Connect with your Solana wallet (Phantom, Backpack, etc.)
+- 💳 **Pay-per-file access** using **HTTP 402 protocol**
+- 📦 **Any user can upload** datasets, images, videos, documents – anything.
+- 📁 Files are stored on **IPFS (via Pinata)** with **private time-limited links**
+- ⌛ Links **auto-expire in 60 seconds** after purchase to preserve exclusivity
+- 📊 Uses **Prisma + PostgreSQL** for secure file metadata storage
+- 💅 Built with **Next.js App Router**, **React 19**, **Tailwind CSS**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💼 Use Case
 
-## Learn More
+1. User logs in with a **Solana wallet**
+2. Uploads a file (e.g. dataset, image, video, ZIP)
+3. The file gets uploaded privately to **Pinata**
+4. Content is listed in the **marketplace**
+5. User pays using Solana (via wallet interaction)
+6. A secure **IPFS download link** is generated
+7. The link auto-expires in **60 seconds** ⏳
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 15+**
+- **Prisma + PostgreSQL**
+- **Pinata IPFS (Private Gateway)**
+- **HTTP 402 Custom Headers + Middleware**
