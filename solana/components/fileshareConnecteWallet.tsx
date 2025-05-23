@@ -10,7 +10,7 @@ import {
 } from "react";
 import { SelectedWalletAccountContext } from "../context/SelectedWalletAccountContext";
 import { DisconnectedWalletPanel } from "@/components/DisconnectedWalletPanel";
-import { SolanaConnectedWalletPanel } from "@/solana/components/SolanaConnectedWalletPanel";
+// import { SolanaConnectedWalletPanel } from "@/solana/components/SolanaConnectedWalletPanel";
 import {
   UiWallet,
   UiWalletAccount,
@@ -58,7 +58,7 @@ function WalletConnector({
 }
 
 // Wallet Connection Component - handles all wallet connection logic
-const SolanaWalletConnector = forwardRef<HTMLDivElement, WalletConnectionProps>(
+const SolConnect = forwardRef<HTMLDivElement, WalletConnectionProps>(
   ({ onWalletConnectionChange }, ref) => {
     // Get the selected wallet account from context
     const [selectedAccount, setSelectedAccount] = useContext(
@@ -170,25 +170,11 @@ const SolanaWalletConnector = forwardRef<HTMLDivElement, WalletConnectionProps>(
     return (
       <div className="space-y-4" ref={ref}>
         {/* Wallet Connector - Only rendered when a wallet is selected for connection */}
-        {selectedWalletForConnection && (
+        {selectedWalletForConnection ? (
           <WalletConnector
             wallet={selectedWalletForConnection}
             onConnect={handleWalletConnect}
             onError={handleWalletError}
-          />
-        )}
-
-
-
-
-        
-        {selectedAccount && selectedWallet ? (
-          <SolanaConnectedWalletPanel
-            connectedAddress={selectedAccount.address}
-            statusMessage={statusMessage}
-            wallet={selectedWallet}
-            onDisconnected={handleDisconnect}
-            disabled={!!selectedWalletForConnection}
           />
         ) : (
           <DisconnectedWalletPanel
@@ -207,6 +193,6 @@ const SolanaWalletConnector = forwardRef<HTMLDivElement, WalletConnectionProps>(
   }
 );
 
-SolanaWalletConnector.displayName = "SolanaWalletConnector";
+SolConnect.displayName = "SolConnect";
 
-export default SolanaWalletConnector;
+export default SolConnect;
