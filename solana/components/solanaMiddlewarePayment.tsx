@@ -5,28 +5,26 @@ import { SelectedWalletAccountContext } from "../context/SelectedWalletAccountCo
 import TransactionStatus from "@/components/TransactionStatus";
 import { UiWalletAccount } from "@wallet-standard/react";
 import { createPayment } from "@bit-gpt/h402";
-import { solanaPaymentDetails } from "@/config/paymentDetails";
 import { createProxiedSolanaRpc } from "../lib/proxiedSolanaRpc";
 import { PaymentClient } from "@bit-gpt/h402/types";
 import { mapTxError } from "@/lib/mapTxError";
 import {
-  useWalletAccountTransactionSendingSigner,
-  // useWalletAccountTransactionSigner,
+  useWalletAccountTransactionSendingSigner
 } from "@solana/react";
 
 // Payment specific interface
-export interface SolanaPaymentProcessorProps {
-  isPromptValid: () => boolean;
+export interface solanaMiddlewarePaymentProps {
   isProcessing: boolean;
   setIsProcessing: (processing: boolean) => void;
-  prompt?: string; // Add prompt parameter for redirection
+  id?: string; // Add prompt parameter for redirection
+  PurchaseMetadata: any;
 }
 
 // Payment Processing Component - handles payment functionality
-const SolanaPaymentProcessor = forwardRef<
+const solanaMiddlewarePayment = forwardRef<
   HTMLButtonElement,
-  SolanaPaymentProcessorProps
->(({ isPromptValid, isProcessing, setIsProcessing, prompt = "" }, ref) => {
+  solanaMiddlewarePaymentProps
+>(({  isProcessing, setIsProcessing, id, PurchaseMetadata }, ref) => {
   // Get the selected wallet account from context
   const [selectedAccount] = useContext(SelectedWalletAccountContext);
 
@@ -44,12 +42,12 @@ const SolanaPaymentProcessor = forwardRef<
   const transactionSigner = useWalletAccountTransactionSigner(
     selectedAccount as UiWalletAccount,
     "solana:mainnet"
-  );
+  );i
   */
 
   // Handle payment submission
   const handlePayment = useCallback(async (): Promise<void> => {
-    if (!isPromptValid() || isProcessing || !selectedAccount) {
+    if ( !selectedAccount) {
       console.log("Payment not valid");
       return Promise.resolve();
     }
@@ -60,7 +58,7 @@ const SolanaPaymentProcessor = forwardRef<
       setStatusMessage(""); // Clear any previous error messages
 
       const dynamicSolanaPaymentDetails = {
-        ...solanaPaymentDetails,
+        ...PurchaseMetadata,
         resource: `solana-image-${Date.now()}`,
       };
 
@@ -99,14 +97,14 @@ const SolanaPaymentProcessor = forwardRef<
 
       setPaymentStatus("paid"); // Using "paid" to match TransactionStatus component
 
-      // If we have a prompt, redirect to the image generation API
-      if (prompt) {
+      // If we have a id, redirect to the image generation API
+      if (id) {
         console.log(
-          "Payment successful! Redirecting directly to image generation..."
+          "Payment successful! Redirecting directly to sharing file.."
         );
 
         // Redirect directly to the image generation API endpoint
-        window.location.href = `/api/generate-image?prompt=${encodeURIComponent(prompt.trim())}&402base64=${encodeURIComponent(
+        window.location.href = `/api/ipfs-share?id=${encodeURIComponent(id.trim())}&402base64=${encodeURIComponent(
           paymentHeader
         )}`;
       } else {
@@ -123,28 +121,27 @@ const SolanaPaymentProcessor = forwardRef<
     }
     return Promise.resolve();
   }, [
-    isPromptValid,
     isProcessing,
     selectedAccount,
     setIsProcessing,
     transactionSendingSigner.signAndSendTransactions,
-    prompt,
+    id,
+    PurchaseMetadata
   ]);
 
   // Used by the hidden button to determine if payment can be processed
-  const canProcessPayment = selectedAccount && isPromptValid() && !isProcessing;
+  const canProcessPayment = selectedAccount 
 
   return (
     <div className="space-y-4">
-      {/* Hidden button for external triggering */}
       {selectedAccount && (
         <button
           ref={ref}
           onClick={handlePayment}
-          style={{ display: "none" }}
           disabled={!canProcessPayment}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
         >
-          Hidden Payment Buttonsolaprocessor
+          Pay with Solana
         </button>
       )}
 
@@ -155,12 +152,12 @@ const SolanaPaymentProcessor = forwardRef<
 
       {/* Error message display */}
       {statusMessage && (
-        <div className="text-red-500 text-sm mt-2">{statusMessage}</div>
+        <div className="text-red-500 text-sm mt-2">{`statusmessageanta`}{statusMessage}</div>
       )}
     </div>
   );
 });
 
-SolanaPaymentProcessor.displayName = "SolanaPaymentProcessor";
+solanaMiddlewarePayment.displayName = "solanaMiddlewarePayment";
 
-export default SolanaPaymentProcessor;
+export default solanaMiddlewarePayment;
