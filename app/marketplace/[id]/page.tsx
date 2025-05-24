@@ -4,16 +4,15 @@ import { useParams } from "next/navigation";
 import { SelectedWalletAccountContext } from "@/solana/context/SelectedWalletAccountContext";
 import SolConnect from "@/solana/components/fileshareConnecteWallet";
 import SolanaMiddlewarePayment from '../../../solana/components/solanaMiddlewarePayment';
+import { QRCodeCanvas } from "qrcode.react";
+
 type FileShare = {
   id: string;
   title: string;
   metadata: string;
   price: string;
   owner: string;
-  cid: string;
 };
-
-
 
 export default function FileDetailPage() {
   const { id } = useParams();
@@ -21,6 +20,8 @@ export default function FileDetailPage() {
   const [loading, setLoading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(true);
   const [selectedAccount] = useContext(SelectedWalletAccountContext); 
+  // Generate the full URL for this file
+  const url = typeof window !== 'undefined' ? `${window.location.origin}/marketplace/${id}` : '';
 
   useEffect(() => {
     const fetchFile = async () => {
@@ -42,7 +43,7 @@ export default function FileDetailPage() {
   if (loading)
     return <div className="flex justify-center items-center h-screen text-gray-500">Loading file info...</div>;
   if (!file)
-    return <div className="flex justify-center items-center h-screen text-red-500">File not found ⚠️</div>;
+    return <div className="flex justify-center items-center h-screen text-red-500"> ...</div>;
 
    const solanaPaymentDetails = {
     scheme: "exact",
@@ -69,23 +70,14 @@ export default function FileDetailPage() {
         <p className="text-lg text-blue-600 dark:text-blue-400 font-semibold mb-4">💰 {file.price} SOL</p>
         <p className="text-xs text-gray-500 dark:text-gray-500 mb-6">📦 Uploaded by: {file.owner}</p>
 
+        {/* QR Code Generator Section */}
+        <div className="mb-6 flex flex-col items-center">
+          <div className="mb-2 font-semibold text-gray-700 dark:text-gray-200">Share this file</div>
+          <QRCodeCanvas value={url} size={180} bgColor="#fff" fgColor="#2E74FF" includeMargin={true} />
+          <div className="mt-2 text-xs text-gray-500 break-all text-center">{url}</div>
+        </div>
+
         <div className="bg-gray-100 dark:bg-zinc-800 p-4 rounded mb-6">
-          {file.cid.endsWith(".jpg") || file.cid.endsWith(".png") ? (
-            <img
-              src={`https://ipfs.io/ipfs/${file.cid}`}
-              alt="IPFS file"
-              className="w-full rounded"
-            />
-          ) : (
-            <a
-              href={`https://ipfs.io/ipfs/${file.cid}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 dark:text-blue-400 underline text-sm"
-            >
-              🔗 View IPFS File
-            </a>
-          )}
           {selectedAccount ? (
             <SolanaMiddlewarePayment
               isProcessing={isProcessing}

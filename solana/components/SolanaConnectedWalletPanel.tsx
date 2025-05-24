@@ -3,6 +3,8 @@ import { UiWallet, useDisconnect } from "@wallet-standard/react";
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import axios from "axios";
+import { toast } from "sonner";
+import { useRouter } from 'next/navigation';
 // import SolanaWalletConnector from "@/solana/components/SolanaWalletConnector";
 export interface SolanaConnectedWalletPanelProps {
   connectedAddress: string;
@@ -25,7 +27,7 @@ export function SolanaConnectedWalletPanel({
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false); // enable fields after upload
   const [dialogOpen, setDialogOpen] = useState(false);
-
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [metadata, setMetadata] = useState("");
   const [price, setPrice] = useState("");
@@ -35,7 +37,7 @@ export function SolanaConnectedWalletPanel({
   };
 
   const uploadFile = async () => {
-    if (!file) return alert("No file selected bro 😓");
+    if (!file) return toast.error("No file selected ");
     try {
       setUploading(true);
       const data = new FormData();
@@ -45,8 +47,9 @@ export function SolanaConnectedWalletPanel({
       });
       setCid(res.data);
       setUploaded(true);
+      toast.success("File uploaded!");
     } catch (err) {
-      alert("Failed to upload file");
+      toast.error("Failed to upload file");
       console.error(err);
     } finally {
       setUploading(false);
@@ -56,7 +59,7 @@ export function SolanaConnectedWalletPanel({
   const handleDialogSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post("/api/save", {
+   const res=await axios.post("/api/save", {
         title,
         metadata,
         price,
@@ -64,7 +67,7 @@ export function SolanaConnectedWalletPanel({
         owner: connectedAddress,
       });
       setDialogOpen(false);
-      alert("Saved successfully 🫡");
+      toast.success("Saved successfully");
       // reset state
       setCid("");
       setFile(undefined);
@@ -72,8 +75,9 @@ export function SolanaConnectedWalletPanel({
       setTitle("");
       setMetadata("");
       setPrice("");
+      router.push(`/marketplace/${res.data.id}`);
     } catch {
-      alert("Save failed bro 😤");
+      toast.error("Save failed bro ");
     }
   };
 
@@ -157,12 +161,6 @@ export function SolanaConnectedWalletPanel({
                       required
                       className="w-full border rounded px-3 py-2"
                     />
-                  </div>
-                  <div>
-                    <label className="block font-medium mb-1">IPFS CID</label>
-                    <div className="w-full border rounded px-3 py-2 bg-gray-100 dark:bg-gray-800 break-all text-xs">
-                      {cid}
-                    </div>
                   </div>
                 </>
               )}

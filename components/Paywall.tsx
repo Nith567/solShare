@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useCallback, useRef, useContext } from "react";
-import ImagePromptInput from "@/components/ImagePromptInput";
 import SolanaWalletConnector from "@/solana/components/SolanaWalletConnector";
 import SolanaPaymentProcessor from "@/solana/components/SolanaPaymentProcessor";
 import { SelectedWalletAccountContext } from "@/solana/context/SelectedWalletAccountContext";
@@ -81,36 +80,28 @@ export default function Paywall() {
   }, [canProcessPayment]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-full">
-      <div className="w-full max-w-[800px] mx-auto p-8">
-        <h1 className="text-2xl font-semibold mb-2">
-          402 pay Image Generation Example
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 text-base mb-8">
-          Connect your Solana wallet, enter a prompt, and pay a small fee to generate
-          an AI image using the HTTP 402 payment protocol.
-        </p>
-        <SolanaPaymentComponents
-          isPromptValid={isPromptValid}
-          isProcessing={isProcessing}
-          setIsProcessing={setIsProcessing}
-          onWalletConnectionChange={handleSolanaWalletConnectionChange}
-          buttonRef={solanaPaymentButtonRef}
-          walletConnected={solanaWalletConnected}
-          prompt={imagePrompt}
-        />
-        <ImagePromptInput
-          value={imagePrompt}
-          onChange={handlePromptChange}
-          disabled={isProcessing}
-          minLength={MIN_PROMPT_LENGTH}
-          paymentMethod={"solana"}
-          walletConnected={walletConnected}
-          isProcessing={isProcessing}
-          canProcessPayment={canProcessPayment}
-          onGenerateImage={handleGenerateImage}
-        />
-      </div>
+<div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-black px-4">
+  <div className="w-full max-w-3xl mx-auto py-12 px-6 md:px-12 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl bg-white dark:bg-[#0d0d0d]">
+    <h1 className="text-4xl font-bold text-center mb-4 text-black dark:text-white">
+      🚀 Solshare
+    </h1>
+    <p className="text-center text-gray-600 dark:text-gray-400 text-lg mb-10 max-w-2xl mx-auto">
+      A platform for creators to monetize their content with pay-per-use powered by <span className="text-[#9945FF] font-semibold">Solana</span>
+    </p>
+
+    <div className="flex flex-col space-y-6">
+      <SolanaPaymentComponents
+        isPromptValid={isPromptValid}
+        isProcessing={isProcessing}
+        setIsProcessing={setIsProcessing}
+        onWalletConnectionChange={handleSolanaWalletConnectionChange}
+        buttonRef={solanaPaymentButtonRef}
+        walletConnected={solanaWalletConnected}
+        prompt={imagePrompt}
+      />
     </div>
+  </div>
+</div>
+
   );
 }
