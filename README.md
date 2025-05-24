@@ -1,5 +1,9 @@
 # SolShare – A Solana-Powered 402 Paywall File Marketplace 🚀🔐
 
+## Demo Video
+
+[Watch the demo video on YouTube](https://youtu.be/kaHejVXioLM)
+
 SolShare is a modern decentralized file marketplace built with **Solana**, **Next.js 15+**, and **Pinata Private Gateway** IPFS storage.  
 This dApp allows users to upload, pay, and access token-gated content using the **HTTP 402 Payment protocol**.
 
