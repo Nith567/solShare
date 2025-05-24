@@ -9,6 +9,14 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
   try {
     const file = await prisma.fileShare.findUnique({
       where: { id },
+      select:{
+        id: true,
+        title: true,
+        metadata: true,
+        price: true,
+        owner: true,
+        cid:false,
+      }
     });
 
     if (!file) {
