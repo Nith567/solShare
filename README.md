@@ -8,9 +8,9 @@ This dApp allows users to upload, pay, and access token-gated content using the 
 ## 🔥 Features
 
 - 💳 **Pay-per-file access**
-- 📦 **Any user can upload** datasets, images, videos, documents – anything.
+- 📦 **Any Creator can upload** datasets, images, videos, documents – anything.
 - 📁 Files are stored on **IPFS (via Pinata)** with **private time-limited(50s) links**
-- ⌛ Links **auto-expire in 50 seconds** after purchase to preserve exclusivity
+- ⌛ Share Content visa Links or QrCode and **auto-expire in 50 seconds** after purchase to preserve exclusivity
 - 📊 Uses **Prisma + PostgreSQL** for secure file metadata storage
 - 💅 Built with **Next.js App Router**, **React 19**, **Tailwind CSS**
 
